@@ -10,6 +10,7 @@ using System.Data.OleDb;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Data.Odbc;
 using MTYS_OCR.Common;
+using LINQtoCSV;
 
 namespace MTYS_OCR.PrePrint
 {
@@ -308,12 +309,15 @@ namespace MTYS_OCR.PrePrint
         ///-----------------------------------------------------------------
         private void setTimeCardChk()
         {
-            // 全てチェックする
             for (int i = 0; i < dg1.Rows.Count; i++)
             {
                 if (dg1[14, i].Value.ToString() == global.FLGON)
                 {
                     dg1[1, i].Value = true;
+                }
+                else
+                {
+                    dg1[1, i].Value = false;
                 }
             }
 
@@ -340,6 +344,15 @@ namespace MTYS_OCR.PrePrint
             {
                 MessageBox.Show("印刷対象行がありません", "印刷確認", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
+            }
+
+            // タイムカード打刻データ
+            if (txtTMData.Text == string.Empty)
+            {
+                if (MessageBox.Show("タイムカード打刻データが指定されていませんがよろしいですか？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    return;
+                }
             }
 
             if (MessageBox.Show(pCnt.ToString() + "件の勤務報告書を印刷します。よろしいですか？", "印刷確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
@@ -535,7 +548,7 @@ namespace MTYS_OCR.PrePrint
                             int sRow = i;   // グリッド行インデックス取得
 
                             // 帳票区分取得
-                            Category = dg1[9, sRow].Value.ToString();
+                            Category = dg1[10, sRow].Value.ToString();
 
                             // 印刷用BOOKへシートを追加する 
                             if (Category == global.C_HONSHA)        // 本社
@@ -562,13 +575,13 @@ namespace MTYS_OCR.PrePrint
                             //}
 
                             // 社員番号
-                            oxlsPrintSheet.Cells[2, 19] = dg1[1, sRow].Value.ToString().PadLeft(ShainLen, '0').Substring(0, 1);
-                            oxlsPrintSheet.Cells[2, 20] = dg1[1, sRow].Value.ToString().PadLeft(ShainLen, '0').Substring(1, 1);
-                            oxlsPrintSheet.Cells[2, 21] = dg1[1, sRow].Value.ToString().PadLeft(ShainLen, '0').Substring(2, 1);
-                            oxlsPrintSheet.Cells[2, 22] = dg1[1, sRow].Value.ToString().PadLeft(ShainLen, '0').Substring(3, 1);
+                            oxlsPrintSheet.Cells[2, 19] = dg1[2, sRow].Value.ToString().PadLeft(ShainLen, '0').Substring(0, 1);
+                            oxlsPrintSheet.Cells[2, 20] = dg1[2, sRow].Value.ToString().PadLeft(ShainLen, '0').Substring(1, 1);
+                            oxlsPrintSheet.Cells[2, 21] = dg1[2, sRow].Value.ToString().PadLeft(ShainLen, '0').Substring(2, 1);
+                            oxlsPrintSheet.Cells[2, 22] = dg1[2, sRow].Value.ToString().PadLeft(ShainLen, '0').Substring(3, 1);
 
                             // 職級
-                            oxlsPrintSheet.Cells[2, 25] = dg1[6, sRow].Value.ToString();
+                            oxlsPrintSheet.Cells[2, 25] = dg1[7, sRow].Value.ToString();
 
                             // 年
                             oxlsPrintSheet.Cells[2, 11] = string.Format("{0, 2}", int.Parse(txtYear.Text)).Substring(2, 1);
@@ -579,18 +592,18 @@ namespace MTYS_OCR.PrePrint
                             oxlsPrintSheet.Cells[2, 15] = string.Format("{0, 2}", int.Parse(txtMonth.Text)).Substring(1, 1);
 
                             // 所属コード
-                            oxlsPrintSheet.Cells[3, 3] = dg1[4, sRow].Value.ToString().PadLeft(ShozokuLen, '0').Substring(0, 1);
-                            oxlsPrintSheet.Cells[3, 4] = dg1[4, sRow].Value.ToString().PadLeft(ShozokuLen, '0').Substring(1, 1);
-                            oxlsPrintSheet.Cells[3, 5] = dg1[4, sRow].Value.ToString().PadLeft(ShozokuLen, '0').Substring(2, 1);
-                            oxlsPrintSheet.Cells[3, 6] = dg1[4, sRow].Value.ToString().PadLeft(ShozokuLen, '0').Substring(3, 1);
-                            oxlsPrintSheet.Cells[3, 7] = dg1[4, sRow].Value.ToString().PadLeft(ShozokuLen, '0').Substring(4, 1);
-                            oxlsPrintSheet.Cells[3, 8] = dg1[4, sRow].Value.ToString().PadLeft(ShozokuLen, '0').Substring(5, 1);
+                            oxlsPrintSheet.Cells[3, 3] = dg1[5, sRow].Value.ToString().PadLeft(ShozokuLen, '0').Substring(0, 1);
+                            oxlsPrintSheet.Cells[3, 4] = dg1[5, sRow].Value.ToString().PadLeft(ShozokuLen, '0').Substring(1, 1);
+                            oxlsPrintSheet.Cells[3, 5] = dg1[5, sRow].Value.ToString().PadLeft(ShozokuLen, '0').Substring(2, 1);
+                            oxlsPrintSheet.Cells[3, 6] = dg1[5, sRow].Value.ToString().PadLeft(ShozokuLen, '0').Substring(3, 1);
+                            oxlsPrintSheet.Cells[3, 7] = dg1[5, sRow].Value.ToString().PadLeft(ShozokuLen, '0').Substring(4, 1);
+                            oxlsPrintSheet.Cells[3, 8] = dg1[5, sRow].Value.ToString().PadLeft(ShozokuLen, '0').Substring(5, 1);
 
                             // 所属名
-                            oxlsPrintSheet.Cells[3, 11] = dg1[5, sRow].Value.ToString();
+                            oxlsPrintSheet.Cells[3, 11] = dg1[6, sRow].Value.ToString();
 
                             // 氏名
-                            oxlsPrintSheet.Cells[3, 19] = dg1[2, sRow].Value.ToString();
+                            oxlsPrintSheet.Cells[3, 19] = dg1[3, sRow].Value.ToString();
 
                             // 出勤すべき日数を取得
                             var h = dts.出勤日数.Where(a => a.RowState != DataRowState.Deleted && a.RowState != DataRowState.Detached &&
@@ -607,19 +620,19 @@ namespace MTYS_OCR.PrePrint
                                 else if (Category == global.C_OOSAKA)       // 大阪製造部のとき
                                 {
 
-                                    if (dg1[10, sRow].Value.ToString() == global.OOSAKAG_A)         // 大阪製造Aのとき
+                                    if (dg1[11, sRow].Value.ToString() == global.OOSAKAG_A)         // 大阪製造Aのとき
                                     {
                                         injiNisu = t.大阪A印字用.ToString();
                                     }
-                                    else if (dg1[10, sRow].Value.ToString() == global.OOSAKAG_B)    // 大阪製造Bのとき
+                                    else if (dg1[11, sRow].Value.ToString() == global.OOSAKAG_B)    // 大阪製造Bのとき
                                     {
                                         injiNisu = t.大阪B印字用.ToString();
                                     }
-                                    else if (dg1[10, sRow].Value.ToString() == global.OOSAKAG_C)    // 大阪製造Cのとき
+                                    else if (dg1[11, sRow].Value.ToString() == global.OOSAKAG_C)    // 大阪製造Cのとき
                                     {
                                         injiNisu = t.大阪C印字用.ToString();
                                     }
-                                    else if (dg1[10, sRow].Value.ToString() == global.OOSAKAG_D)    // 大阪製造Dのとき
+                                    else if (dg1[11, sRow].Value.ToString() == global.OOSAKAG_D)    // 大阪製造Dのとき
                                     {
                                         injiNisu = t.大阪D印字用.ToString();
                                     }
@@ -633,7 +646,7 @@ namespace MTYS_OCR.PrePrint
 
                             oxlsPrintSheet.Cells[3, 28] = injiNisu;
 
-                            // 曜日表示
+                            // 日別明細処理
                             int addRow = 0;
                             for (int iX = global.MAX_MIN; iX <= global.MAX_GYO; iX++)
                             {
@@ -650,13 +663,66 @@ namespace MTYS_OCR.PrePrint
                                     addRow = iX + 1;
                                 }
 
-                                // 暦補正値は設定ファイルから取得する 2011/03/24
                                 sDate = txtYear.Text + "/" + txtMonth.Text + "/" + iX.ToString();
 
+                                // 存在する日付のとき
                                 if (DateTime.TryParse(sDate, out eDate))
-                                    //oxlsPrintSheet.Cells[S_GYO + addRow, 2] = ("日月火水木金土").Substring(int.Parse(eDate.DayOfWeek.ToString("d")), 1);
+                                {
+                                    // 曜日表示
                                     oxlsPrintSheet.Cells[S_GYO + addRow, 2] = eDate.ToString("ddd");
-                                else oxlsPrintSheet.Cells[S_GYO + addRow, 1] = string.Empty;
+
+                                    // タイムカード打刻データ印字：2018/10/13
+                                    if (dg1[1, i].Value.ToString() == "True")
+                                    {
+                                        string sTime = string.Empty;
+                                        string eTime = string.Empty;
+                                        getTimeCardData(txtTMData.Text, Utility.StrtoInt(dg1[2, sRow].Value.ToString()), eDate, out sTime, out eTime);
+                                        
+                                        // 出勤時刻打刻データ印字
+                                        if (sTime != string.Empty)
+                                        {
+                                            string[] tt = sTime.Split(':');
+                                            string gt = string.Empty;
+
+                                            if (tt.Length > 1)
+                                            {
+                                                // 出勤時刻：時
+                                                gt = tt[0].PadLeft(2, ' ');
+                                                oxlsPrintSheet.Cells[S_GYO + addRow, 6] = gt.Substring(0, 1);
+                                                oxlsPrintSheet.Cells[S_GYO + addRow, 7] = gt.Substring(1, 1);
+
+                                                // 出勤時刻：分
+                                                gt = tt[1].PadLeft(2, '0');
+                                                oxlsPrintSheet.Cells[S_GYO + addRow, 8] = gt.Substring(0, 1);
+                                                oxlsPrintSheet.Cells[S_GYO + addRow, 9] = gt.Substring(1, 1);
+                                            }
+                                        }
+
+                                        // 退勤時刻打刻データ印字
+                                        if (eTime != string.Empty)
+                                        {
+                                            string[] tt = eTime.Split(':');
+                                            string gt = string.Empty;
+
+                                            if (tt.Length > 1)
+                                            {
+                                                // 退勤時刻：時
+                                                gt = tt[0].PadLeft(2, ' ');
+                                                oxlsPrintSheet.Cells[S_GYO + addRow, 10] = gt.Substring(0, 1);
+                                                oxlsPrintSheet.Cells[S_GYO + addRow, 11] = gt.Substring(1, 1);
+
+                                                // 退勤時刻：分
+                                                gt = tt[1].PadLeft(2, '0');
+                                                oxlsPrintSheet.Cells[S_GYO + addRow, 12] = gt.Substring(0, 1);
+                                                oxlsPrintSheet.Cells[S_GYO + addRow, 13] = gt.Substring(1, 1);
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    oxlsPrintSheet.Cells[S_GYO + addRow, 1] = string.Empty;
+                                }
 
                                 // 
                                 // 網掛け処理
@@ -767,6 +833,49 @@ namespace MTYS_OCR.PrePrint
             //マウスポインタを元に戻す
             this.Cursor = Cursors.Default;
         }
+
+        ///-------------------------------------------------------------------
+        /// <summary>
+        ///     タイムカード打刻データ取得：2018/10/13 </summary>
+        /// <param name="dPath">
+        ///     タイムカード打刻データパス</param>
+        /// <param name="sNum">
+        ///     社員番号</param>
+        /// <param name="sDt">
+        ///     日付</param>
+        /// <param name="sTime">
+        ///     出勤時刻</param>
+        /// <param name="eTime">
+        ///     退勤時刻</param>
+        ///-------------------------------------------------------------------
+        private void getTimeCardData(string dPath, int sNum, DateTime sDt, out string sTime, out string eTime)
+        {
+            sTime = string.Empty;
+            eTime = string.Empty;
+
+            var context = new CsvContext();
+
+            // CSVの情報を示すオブジェクトを構築
+            var description = new CsvFileDescription
+            {
+                SeparatorChar = ',',
+                FirstLineHasColumnNames = true,
+                EnforceCsvColumnAttribute = true,
+                TextEncoding = Encoding.GetEncoding(932)
+            };
+
+            var s = context.Read<Common.clsLinqCsv>(dPath, description)
+                .Where(a => a.sNum == sNum && a.sDate.ToShortDateString() == sDt.ToShortDateString());
+
+            foreach (var t in s)
+            {
+                sTime = Utility.NulltoStr(t.sShukinTime);
+                eTime = Utility.NulltoStr(t.sTaikinTime);
+            }
+        }
+
+
+
 
         private void txtYear_Enter(object sender, EventArgs e)
         {

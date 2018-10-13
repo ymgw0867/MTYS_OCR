@@ -8,67 +8,67 @@ namespace MTYS_OCR.Common
 {
     class clsLinqCsv
     {
-        [CsvColumn(FieldIndex = 1)]
+        [CsvColumn(Name = "カード番号")]
         public string sCardNum { get; set; }
 
-        [CsvColumn(FieldIndex = 2)]
+        [CsvColumn(Name = "従業員番号")]
         public int sNum { get; set; }
 
-        [CsvColumn(FieldIndex = 3)]
+        [CsvColumn(Name = "従業員氏名")]
         public string sName { get; set; }
 
-        [CsvColumn(FieldIndex = 4)]
+        [CsvColumn(Name = "所属番号")]
         public int shozoku { get; set; }
 
-        [CsvColumn(FieldIndex = 5)]
+        [CsvColumn(Name = "年/月/日")]
         public DateTime sDate { get; set; }
 
-        [CsvColumn(FieldIndex = 6)]
+        [CsvColumn(Name = "シフト番号")]
         public string shiftNum { get; set; }
 
-        [CsvColumn(FieldIndex = 7)]
+        [CsvColumn(Name = "平日/休日区分")]
         public string sDummy1 { get; set; }
 
-        [CsvColumn(FieldIndex = 8)]
+        [CsvColumn(Name = "不在理由")]
         public string sDummy2 { get; set; }
 
-        [CsvColumn(FieldIndex = 9)]
+        [CsvColumn(Name = "出勤打刻")]
         public string sShukinTime { get; set; }
 
-        [CsvColumn(FieldIndex = 10)]
+        [CsvColumn(Name = "出勤マーク")]
         public string sDummy3 { get; set; }
 
-        [CsvColumn(FieldIndex = 11)]
+        [CsvColumn(Name = "外出打刻")]
         public string sDummy4 { get; set; }
 
-        [CsvColumn(FieldIndex = 12)]
+        [CsvColumn(Name = "外出マーク")]
         public string sDummy5 { get; set; }
 
-        [CsvColumn(FieldIndex = 13)]
+        [CsvColumn(Name = "戻打刻")]
         public string sDummy6 { get; set; }
 
-        [CsvColumn(FieldIndex = 14)]
+        [CsvColumn(Name = "戻マーク")]
         public string sDummy7 { get; set; }
 
-        [CsvColumn(FieldIndex = 15)]
+        [CsvColumn(Name = "退勤打刻")]
         public string sTaikinTime { get; set; }
 
-        [CsvColumn(FieldIndex = 16)]
+        [CsvColumn(Name = "退勤マーク")]
         public string sDummy8 { get; set; }
 
-        [CsvColumn(FieldIndex = 17)]
+        [CsvColumn(Name = "例外１")]
         public string sDummy9 { get; set; }
 
-        [CsvColumn(FieldIndex = 18)]
+        [CsvColumn(Name = "例外マーク")]
         public string sDummy10 { get; set; }
 
-        [CsvColumn(FieldIndex = 19)]
+        [CsvColumn(Name = "例外２")]
         public string sDummy11 { get; set; }
 
-        [CsvColumn(FieldIndex = 20)]
+        [CsvColumn(Name = "例外２マーク")]
         public string sDummy12 { get; set; }
 
-        [CsvColumn(FieldIndex = 21)]
+        [CsvColumn(Name = "コメント")]
         public string sDummy13 { get; set; }
     }
 }
