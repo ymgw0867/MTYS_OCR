@@ -49,6 +49,10 @@ namespace MTYS_OCR.OCR
             // テーブルアダプターマネージャーに勤務票ヘッダ、明細テーブルアダプターを割り付ける
             adpMn.勤務票ヘッダTableAdapter = hAdp;
             adpMn.勤務票明細TableAdapter = iAdp;
+
+            // 社員番号テキストボックス：2018/10/15
+            txtNo.AutoSize = false;
+            txtNo.Height = 21;
         }
 
         // データアダプターオブジェクト
