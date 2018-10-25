@@ -39,7 +39,7 @@ namespace MTYS_OCR.OCR
             InitializeComponent();
 
             // データテーブルにデータを読み込む
-            adpHd.Fill(dts.過去勤務票ヘッダ);
+            //adpHd.Fill(dts.過去勤務票ヘッダ);     // 2018/10/25 コメント化
             adpMn.社員所属TableAdapter = adp;
             adpMn.社員所属TableAdapter.Fill(dts.社員所属);
         }
@@ -197,8 +197,10 @@ namespace MTYS_OCR.OCR
             try
             {
                 // データの抽出
+                adpHd.FillByYYMM(dts.過去勤務票ヘッダ, sYY, sMM);   // 2018/10/25
+
                 var s = dts.過去勤務票ヘッダ
-                        .Where(a => a.年 == sYY && a.月 == sMM)
+                        //.Where(a => a.年 == sYY && a.月 == sMM)     // 2018/10/25 コメント化
                         .OrderBy(a => a.所属コード).ThenBy(a => a.個人番号);
 
                 // 帳票番号指定

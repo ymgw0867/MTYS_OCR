@@ -943,6 +943,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1202, 798);
+            this.Controls.Add(this.txtTokukyu);
+            this.Controls.Add(this.txtKekkin);
+            this.Controls.Add(this.txtSeiri);
+            this.Controls.Add(this.txtJisa);
+            this.Controls.Add(this.txtYukyu);
+            this.Controls.Add(this.txtShukkin);
             this.Controls.Add(this.lblFuri);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtSoutaiTL);
@@ -973,10 +979,6 @@
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label19);
-            this.Controls.Add(this.txtTokukyu);
-            this.Controls.Add(this.txtKekkin);
-            this.Controls.Add(this.txtSeiri);
-            this.Controls.Add(this.txtJisa);
             this.Controls.Add(this.txtHoanH);
             this.Controls.Add(this.txtHoanK);
             this.Controls.Add(this.txtShukuK);
@@ -1007,8 +1009,6 @@
             this.Controls.Add(this.txtKoujyoNissu);
             this.Controls.Add(this.label31);
             this.Controls.Add(this.label27);
-            this.Controls.Add(this.txtYukyu);
-            this.Controls.Add(this.txtShukkin);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.pictureBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

@@ -22964,13 +22964,20 @@ namespace MTYS_OCR.MTYSDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[1];
+            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[2];
             this._commandCollection[0] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT ID, ヘッダID, 日付, 休日マーク, 勤怠記号1, 勤怠記号2, 開始時, 開始分, 終了時, 終了分, 時間外時, 時間外分, 休憩時, 休" +
                 "憩分, 休日出勤時, 休日出勤分, 所定内休日時, 所定内休日分, 深夜時, 深夜分, 実働時, 実働分, 交通費, 訂正, 実働編集, 遅早退時, 遅早退分," +
                 " 出勤形態, 更新年月日 FROM 過去勤務票明細";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1] = new global::System.Data.OleDb.OleDbCommand();
+            this._commandCollection[1].Connection = this.Connection;
+            this._commandCollection[1].CommandText = "SELECT ID, ヘッダID, 日付, 休日マーク, 勤怠記号1, 勤怠記号2, 開始時, 開始分, 終了時, 終了分, 時間外時, 時間外分, 休憩時, 休" +
+                "憩分, 休日出勤時, 休日出勤分, 所定内休日時, 所定内休日分, 深夜時, 深夜分, 実働時, 実働分, 交通費, 訂正, 実働編集, 遅早退時, 遅早退分," +
+                " 出勤形態, 更新年月日 FROM 過去勤務票明細 where ヘッダID = ? order by ID";
+            this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("ヘッダID", global::System.Data.OleDb.OleDbType.WChar, 17, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "ヘッダID", global::System.Data.DataRowVersion.Current, false, null));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -22992,6 +22999,42 @@ namespace MTYS_OCR.MTYSDataSetTableAdapters {
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
         public virtual MTYSDataSet.過去勤務票明細DataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
+            MTYSDataSet.過去勤務票明細DataTable dataTable = new MTYSDataSet.過去勤務票明細DataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByHID(MTYSDataSet.過去勤務票明細DataTable dataTable, string ヘッダID) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((ヘッダID == null)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((string)(ヘッダID));
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual MTYSDataSet.過去勤務票明細DataTable GetDataByHID(string ヘッダID) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((ヘッダID == null)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((string)(ヘッダID));
+            }
             MTYSDataSet.過去勤務票明細DataTable dataTable = new MTYSDataSet.過去勤務票明細DataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
@@ -28754,11 +28797,18 @@ namespace MTYS_OCR.MTYSDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[1];
+            this._commandCollection = new global::System.Data.OleDb.OleDbCommand[2];
             this._commandCollection[0] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = @"SELECT ID, 帳票番号, 個人番号, 氏名, フリガナ, 年, 月, 所属コード, 所属名, 給与区分, 画像名, 出勤すべき日数, 計算用出勤日数, 出勤日数合計, 出勤日数2, 有休日数合計, 有休日数2, 有休時間合計, 特休日数合計, 振休日数合計, 振出日数合計, 遅刻早退回数, 欠勤日数合計, 生理分娩日数, 時差出勤日数, 平日保安回数, 休日保安回数, 平日宿日直回数, 休日宿日直回数, [1L勤回数], [2勤回数], 丸3勤回数, [3勤回数], 日祝日勤務回数, 控除日数, 実稼動日数合計, 総労働, 総労働分, 残業時, 残業分, 深夜時, 深夜分, 休日勤務時, 休日勤務分, 遅刻時間時, 遅刻時間分, 早退時間時, 早退時間分, 月間規定勤務時間, パート労働時間総枠, 確認, データ領域名, 更新年月日 FROM 過去勤務票ヘッダ";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1] = new global::System.Data.OleDb.OleDbCommand();
+            this._commandCollection[1].Connection = this.Connection;
+            this._commandCollection[1].CommandText = @"SELECT ID, 帳票番号, 個人番号, 氏名, フリガナ, 年, 月, 所属コード, 所属名, 給与区分, 画像名, 出勤すべき日数, 計算用出勤日数, 出勤日数合計, 出勤日数2, 有休日数合計, 有休日数2, 有休時間合計, 特休日数合計, 振休日数合計, 振出日数合計, 遅刻早退回数, 欠勤日数合計, 生理分娩日数, 時差出勤日数, 平日保安回数, 休日保安回数, 平日宿日直回数, 休日宿日直回数, [1L勤回数], [2勤回数], 丸3勤回数, [3勤回数], 日祝日勤務回数, 控除日数, 実稼動日数合計, 総労働, 総労働分, 残業時, 残業分, 深夜時, 深夜分, 休日勤務時, 休日勤務分, 遅刻時間時, 遅刻時間分, 早退時間時, 早退時間分, 月間規定勤務時間, パート労働時間総枠, 確認, データ領域名, 更新年月日 FROM 過去勤務票ヘッダ 
+where 年 = ? and 月= ? order by 所属コード, 個人番号";
+            this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("年", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "年", global::System.Data.DataRowVersion.Current, false, null));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.OleDb.OleDbParameter("月", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "月", global::System.Data.DataRowVersion.Current, false, null));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -28780,6 +28830,54 @@ namespace MTYS_OCR.MTYSDataSetTableAdapters {
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
         public virtual MTYSDataSet.過去勤務票ヘッダDataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
+            MTYSDataSet.過去勤務票ヘッダDataTable dataTable = new MTYSDataSet.過去勤務票ヘッダDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByYYMM(MTYSDataSet.過去勤務票ヘッダDataTable dataTable, global::System.Nullable<int> 年, global::System.Nullable<int> 月) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((年.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((int)(年.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            if ((月.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(月.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual MTYSDataSet.過去勤務票ヘッダDataTable GetDataByYYMM(global::System.Nullable<int> 年, global::System.Nullable<int> 月) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((年.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[0].Value = ((int)(年.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[0].Value = global::System.DBNull.Value;
+            }
+            if ((月.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(月.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
             MTYSDataSet.過去勤務票ヘッダDataTable dataTable = new MTYSDataSet.過去勤務票ヘッダDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;

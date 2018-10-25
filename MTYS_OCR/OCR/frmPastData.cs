@@ -88,8 +88,9 @@ namespace MTYS_OCR.OCR
             this.Text = "過去勤務報告書データ表示";
 
             // 参照テーブルデータセット読込み
-            adp.Fill(dts.過去勤務票ヘッダ);
-            mAdp.Fill(dts.過去勤務票明細);
+            //adp.Fill(dts.過去勤務票ヘッダ);       // 2018/10/25 コメント化
+            //mAdp.Fill(dts.過去勤務票明細);       // 2018/10/25 コメント化
+
             sAdp.Fill(dts.社員所属);
             yAdp.Fill(dts.休日);
 

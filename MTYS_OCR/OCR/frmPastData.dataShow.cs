@@ -26,6 +26,8 @@ namespace MTYS_OCR.OCR
             formInitialize(dID, iX);
 
             // 過去勤務票ヘッダテーブル行を取得
+            adp.FillByYYMM(dts.過去勤務票ヘッダ, sYY, sMM);     // 2018/10/25
+
             var s = dts.過去勤務票ヘッダ.Where(a => a.個人番号 == iX && a.年 == sYY && a.月 == sMM);
 
             foreach (var r in s)
@@ -125,8 +127,12 @@ namespace MTYS_OCR.OCR
             // 行インデックス初期化
             int mRow = 0;
 
+            // 過去勤務票明細データ取得：2018/10/25
+            mAdp.FillByHID(dts.過去勤務票明細, hID);
+            
             // 日別勤務実績表示
-            var h = dts.過去勤務票明細.Where(a => a.ヘッダID == hID).OrderBy(a => a.ID);
+            //var h = dts.過去勤務票明細.Where(a => a.ヘッダID == hID).OrderBy(a => a.ID);    // 2018/10/25 コメント化
+            var h = dts.過去勤務票明細.OrderBy(a => a.ID);
 
             foreach (var t in h)
             {
