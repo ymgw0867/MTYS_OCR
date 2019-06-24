@@ -356,11 +356,145 @@ namespace MTYS_OCR.PrePrint
             }
 
             if (MessageBox.Show(pCnt.ToString() + "件の勤務報告書を印刷します。よろしいですか？", "印刷確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
+
+            // 2018/11/29
+            // タイムカードＣＳＶデータからデータ中のヘッダデータを除去し印刷用データを出力する
+            string tmCsv = string.Empty;
+            if (txtTMData.Text != string.Empty)
+            {
+                csvDataOutput(txtTMData.Text, out tmCsv);
+            }
             
-            sReport();
+            // タイムレコーダーCSVファイルパスを渡す 2018/11/29
+            sReport(tmCsv);
 
             MessageBox.Show("印刷が終了しました", appName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // 印刷用タイムカードCSVファイル削除
+            if (tmCsv != string.Empty)
+            {
+                if (System.IO.File.Exists(tmCsv))
+                {
+                    System.IO.File.Delete(tmCsv);
+                }
+            }
         }
+
+        ///---------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     タイムカードＣＳＶデータからデータ中のヘッダデータを除去し印刷用データを出力する </summary>
+        /// <param name="sPath">
+        ///     画面で指定したタイムカードファイルパス</param>
+        /// <param name="tPath">
+        ///     印刷用出力ファイル</param>
+        /// <returns>
+        ///     </returns>
+        ///---------------------------------------------------------------------------------------------
+        private bool csvDataOutput(string sPath, out string tPath)
+        {
+            string[] outCsv = null;
+            int iX = 0;
+            
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                foreach (var str in System.IO.File.ReadAllLines(sPath, Encoding.Default))
+                {
+                    // カンマ区切りで分割して配列に格納する
+                    string[] stCSV = str.Split(',');
+
+                    if (iX > 0)
+                    {
+                        if (stCSV[0].Contains("カード番号"))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            Array.Resize(ref outCsv, iX + 1);
+                            outCsv[iX] = str;
+                        }
+                    }
+                    else
+                    {
+                        Array.Resize(ref outCsv, iX + 1);
+                        outCsv[iX] = str;
+                    }
+
+                    iX++;
+                }
+                
+                // CSVファイル出力
+                string outPath = System.IO.Path.GetDirectoryName(sPath) + @"\timeCard.csv";
+                if (txtFileWrite(outPath, outCsv))
+                {
+                    // 出力ファイル名を返す
+                    tPath = outPath;
+                    return true;
+                }
+                else
+                {
+                    tPath = string.Empty;
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                tPath = string.Empty;
+                return false;
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        ///----------------------------------------------------------------------------
+        /// <summary>
+        ///     テキストファイルを出力する</summary>
+        /// <param name="outFilePath">
+        ///     パスを含む出力ファイル名</param>
+        /// <param name="arrayData">
+        ///     書き込む配列データ</param>
+        ///----------------------------------------------------------------------------
+        private bool txtFileWrite(string outFilePath, string[] arrayData)
+        {
+            try
+            {
+                //// 出力ファイルが存在するとき
+                //if (System.IO.File.Exists(outFilePath))
+                //{
+                //    // リネーム付加文字列（タイムスタンプ）
+                //    string newFileName = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString().PadLeft(2, '0') +
+                //                         DateTime.Now.Day.ToString().PadLeft(2, '0') + DateTime.Now.Hour.ToString().PadLeft(2, '0') +
+                //                         DateTime.Now.Minute.ToString().PadLeft(2, '0') + DateTime.Now.Second.ToString().PadLeft(2, '0');
+
+                //    // リネーム後ファイル名
+                //    string reFileName = Path.GetDirectoryName(outFilePath) + @"\" + Path.GetFileNameWithoutExtension(outFilePath) + newFileName + ".csv";
+
+                //    // 確認表示
+                //    MessageBox.Show(outFilePath + "は既に存在しています。" + Environment.NewLine + Environment.NewLine +
+                //        "登録済みファイルは名前を以下のように変更して保存します。" + Environment.NewLine + Environment.NewLine +
+                //    "現）" + outFilePath + Environment.NewLine +
+                //    "新）" + reFileName, "既存ファイルの名前変更", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                //    // 既存のファイルをリネーム
+                //    File.Move(outFilePath, reFileName);
+                //}
+
+                // テキストファイル出力
+                System.IO.File.WriteAllLines(outFilePath, arrayData, System.Text.Encoding.GetEncoding(932));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+        }
+
 
         private Boolean ErrCheck()
         {
@@ -485,7 +619,7 @@ namespace MTYS_OCR.PrePrint
         /// <summary>
         /// 社員出勤簿印刷・シート追加一括印刷
         /// </summary>
-        private void sReport()
+        private void sReport(string tmDataPath)
         {
             // 休日テーブル読み込み
             MTYSDataSetTableAdapters.休日TableAdapter adpH = new MTYSDataSetTableAdapters.休日TableAdapter();
@@ -672,11 +806,12 @@ namespace MTYS_OCR.PrePrint
                                     oxlsPrintSheet.Cells[S_GYO + addRow, 2] = eDate.ToString("ddd");
 
                                     // タイムカード打刻データ印字：2018/10/13
-                                    if (dg1[1, i].Value.ToString() == "True")
+                                    // タイムカードファイル指定を条件に追加 : 2018/11/29
+                                    if (tmDataPath != string.Empty && dg1[1, i].Value.ToString() == "True")
                                     {
                                         string sTime = string.Empty;
                                         string eTime = string.Empty;
-                                        getTimeCardData(txtTMData.Text, Utility.StrtoInt(dg1[2, sRow].Value.ToString()), eDate, out sTime, out eTime);
+                                        getTimeCardData(tmDataPath, Utility.StrtoInt(dg1[2, sRow].Value.ToString()), eDate, out sTime, out eTime);
                                         
                                         // 出勤時刻打刻データ印字
                                         if (sTime != string.Empty)

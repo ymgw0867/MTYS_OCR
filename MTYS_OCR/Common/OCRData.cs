@@ -291,7 +291,7 @@ namespace MTYS_OCR.Common
         private const string KEITAI_6 = "6";        // 大阪：３勤
         #endregion
 
-        private const int SHOKUKYU_KEIYAKU71 = 71;  // 職級71：契約社員
+        private const int SHOKUKYU_KEIYAKU71 = 71;  // 資格71：契約社員
 
         // テーブルアダプターマネージャーインスタンス
         MTYSDataSetTableAdapters.TableAdapterManager adpMn = new MTYSDataSetTableAdapters.TableAdapterManager();
@@ -1310,12 +1310,13 @@ namespace MTYS_OCR.Common
                 return false;
             }
 
-            // 契約社員以外で半休記入
-            if (kCode == KINTAIKIGOU_0 && sr.資格 != SHOKUKYU_KEIYAKU71)
-            {
-                setErrStatus(errNum, iX - 1, "契約社員以外に「０：半休」が記入されています");
-                return false;
-            }
+            // 2019/06/24 契約社員以外も半休使用可能となったため、コメント化
+            //// 契約社員以外で半休記入
+            //if (kCode == KINTAIKIGOU_0 && sr.資格 != SHOKUKYU_KEIYAKU71)
+            //{
+            //    setErrStatus(errNum, iX - 1, "契約社員以外に「０：半休」が記入されています");
+            //    return false;
+            //}
 
             return true;
         }
