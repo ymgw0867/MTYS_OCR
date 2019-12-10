@@ -283,12 +283,12 @@ namespace MTYS_OCR.Common
         #endregion
 
         #region 出勤形態
-        private const string KEITAI_1 = "1";        // 本社：時差A、静岡：１直、大阪：①勤
-        private const string KEITAI_2 = "2";        // 本社：時差B、静岡：２直、大阪：１勤
-        private const string KEITAI_3 = "3";        // 本社：１直、大阪：１L勤
-        private const string KEITAI_4 = "4";        // 本社：２直、大阪：２勤
-        private const string KEITAI_5 = "5";        // 本社：３直、大阪：③勤
-        private const string KEITAI_6 = "6";        // 大阪：３勤
+        private const string KEITAI_1 = "1";        // 静岡：１直、大阪：①勤  // 2019/12/10
+        private const string KEITAI_2 = "2";        // 静岡：２直、大阪：１勤  // 2019/12/10
+        private const string KEITAI_3 = "3";        // 大阪：１L勤   // 2019/12/10
+        private const string KEITAI_4 = "4";        // 大阪：２勤    // 2019/12/10
+        private const string KEITAI_5 = "5";        // 大阪：③勤     // 2019/12/10
+        private const string KEITAI_6 = "6";        // 大阪：３勤    // 2019/12/10
         #endregion
 
         private const int SHOKUKYU_KEIYAKU71 = 71;  // 資格71：契約社員
@@ -1818,7 +1818,8 @@ namespace MTYS_OCR.Common
             if (m.出勤形態 == string.Empty) return true;
 
             // 出勤形態マスターに登録されているか
-            var s = dts.出勤形態.Where(a => a.コード == Utility.StrtoInt(m.出勤形態) && a.帳票区分 == sr.帳票区分);
+            //var s = dts.出勤形態.Where(a => a.コード == Utility.StrtoInt(m.出勤形態) && a.帳票区分 == sr.帳票区分);  // 2019/12/10 コメント化
+            var s = dts.出勤形態.Where(a => a.コード == m.出勤形態 && a.帳票区分 == sr.帳票区分);
             if (s.Count() == 0)
             {
                 setErrStatus(eShukeitai, iX - 1, "マスター未登録の" + tittle + "です");

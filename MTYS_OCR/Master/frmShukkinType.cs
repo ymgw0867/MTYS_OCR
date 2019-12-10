@@ -248,8 +248,9 @@ namespace MTYS_OCR.Master
                         return;
 
                     // データセットにデータを追加します
-                    dts.出勤形態.Add出勤形態Row(int.Parse(txtCode.Text), int.Parse(cmbKbn.SelectedValue.ToString()), txtName.Text, txtMemo.Text, DateTime.Now);
-                    
+                    //dts.出勤形態.Add出勤形態Row(int.Parse(txtCode.Text), int.Parse(cmbKbn.SelectedValue.ToString()), txtName.Text, txtMemo.Text, DateTime.Now);   // 2019/12/10 コメント化
+                    dts.出勤形態.Add出勤形態Row(txtCode.Text.Trim(), int.Parse(cmbKbn.SelectedValue.ToString()), txtName.Text, txtMemo.Text, DateTime.Now);
+
                     break;
 
                 // 更新処理
@@ -265,7 +266,8 @@ namespace MTYS_OCR.Master
                     
                     if (!r.HasErrors)
                     {
-                        r.コード = int.Parse(txtCode.Text);
+                        //r.コード = int.Parse(txtCode.Text);  // 2019/12/10 コメント化
+                        r.コード = txtCode.Text.Trim();
                         r.帳票区分 = Utility.StrtoInt(cmbKbn.SelectedValue.ToString());
                         r.名称 = txtName.Text;
                         r.備考 = txtMemo.Text;
@@ -463,11 +465,7 @@ namespace MTYS_OCR.Master
 
         private void txtCode_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if ((e.KeyChar < '0' || e.KeyChar > '9') && e.KeyChar != '\b')
-            {
-                e.Handled = true;
-                return;
-            }
+
         }
     }
 }
