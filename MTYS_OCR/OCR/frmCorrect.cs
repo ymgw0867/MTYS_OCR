@@ -494,7 +494,9 @@ namespace MTYS_OCR.OCR
             if (e.Control is DataGridViewTextBoxEditingControl)
             {
                 // 勤怠記号カラム
-                if (dGV.CurrentCell.ColumnIndex == 2 || dGV.CurrentCell.ColumnIndex == 3)
+                // 出勤形態も"A","B","C"あり：2019/12/19
+                if (dGV.CurrentCell.ColumnIndex == 2 || dGV.CurrentCell.ColumnIndex == 3　||
+                    dGV.CurrentCell.ColumnIndex == 19)
                 {
                     // 大文字英字入力とする（'A','B'等）
                     TextBox tb = (TextBox)(e.Control);
@@ -1376,6 +1378,8 @@ namespace MTYS_OCR.OCR
         ///----------------------------------------------------------------------------------
         private void tifFileMove()
         {
+            Cursor = Cursors.WaitCursor;
+
             // 移動先フォルダがあるか？なければ作成する（TIFフォルダ）
             if (!System.IO.Directory.Exists(Properties.Settings.Default.tifPath))
                 System.IO.Directory.CreateDirectory(Properties.Settings.Default.tifPath);
@@ -1404,6 +1408,8 @@ namespace MTYS_OCR.OCR
                 MTYSDataSet.勤務票ヘッダRow r = dts.勤務票ヘッダ.FindByID(t.ID);
                 r.画像名 = NewFilename;
             }
+
+            Cursor = Cursors.Default;
         }
 
         /// ---------------------------------------------------------------------
@@ -1412,6 +1418,8 @@ namespace MTYS_OCR.OCR
         /// ---------------------------------------------------------------------
         private void mdbCompact()
         {
+            Cursor = Cursors.WaitCursor;
+
             try
             {
                 JRO.JetEngine jro = new JRO.JetEngine();
@@ -1432,6 +1440,10 @@ namespace MTYS_OCR.OCR
             catch (Exception e)
             {
                 MessageBox.Show("MDB最適化中" + Environment.NewLine + e.Message, "エラー", MessageBoxButtons.OK);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
             }
         }
         
@@ -1462,6 +1474,8 @@ namespace MTYS_OCR.OCR
             // 削除月設定が0のとき、「過去画像削除しない」とみなし終了する
             if (global.cnfArchived == global.flgOff) return;
 
+            Cursor = Cursors.WaitCursor;
+
             try
             {
                 // 削除年月の取得
@@ -1483,11 +1497,13 @@ namespace MTYS_OCR.OCR
             }
             catch (Exception e)
             {
+                Cursor = Cursors.Default;
                 MessageBox.Show("過去画像・過去勤務票データ削除中" + Environment.NewLine + e.Message, "エラー", MessageBoxButtons.OK);
                 return;
             }
             finally
             {
+                Cursor = Cursors.Default;
                 //if (ocr.sCom.Connection.State == ConnectionState.Open) ocr.sCom.Connection.Close();
             }
         }
@@ -1498,6 +1514,8 @@ namespace MTYS_OCR.OCR
         /// ---------------------------------------------------------------------------
         private void saveLastData()
         {
+            Cursor = Cursors.WaitCursor;
+
             try
             {
                 // 過去勤務票ヘッダテーブルデータ読み込み
@@ -1524,10 +1542,12 @@ namespace MTYS_OCR.OCR
             }
             catch (Exception ex)
             {
+                Cursor = Cursors.Default;
                 MessageBox.Show(ex.Message, "過去勤務票データ作成エラー", MessageBoxButtons.OK);
             }
             finally
             {
+                Cursor = Cursors.Default;
             }
         }
 
@@ -1949,8 +1969,10 @@ namespace MTYS_OCR.OCR
         /// <summary>
         ///     勤務票ヘッダデータと勤務票明細データを全件削除します</summary>
         /// -------------------------------------------------------------------
-        private void deleteDataAll() 
+        private void deleteDataAll()
         {
+            Cursor = Cursors.WaitCursor;
+
             // 勤務票明細全行削除
             var m = dts.勤務票明細.Where(a => a.RowState != DataRowState.Deleted);
             foreach (var t in m)
@@ -1971,6 +1993,9 @@ namespace MTYS_OCR.OCR
             // 後片付け
             dts.勤務票明細.Dispose();
             dts.勤務票ヘッダ.Dispose();
+
+            Cursor = Cursors.Default;
+
         }
 
         private void maskedTextBox3_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
